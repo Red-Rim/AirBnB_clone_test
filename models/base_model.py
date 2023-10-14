@@ -16,7 +16,7 @@ class BaseModel:
             **kwargs: A dict of attributes.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize new BaseModel"""
         if kwargs:
             for key, val in kwargs.items():
