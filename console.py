@@ -58,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-    def do_destroy(self, l:
+    def do_destroy(self, l):
         """Deletes an instance based on the class name and id"""
         args = l.split()
         if not l:
