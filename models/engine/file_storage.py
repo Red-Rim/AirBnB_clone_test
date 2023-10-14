@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+
+
 """Define FileStorage Class"""
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -9,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+
 
 class FileStorage:
     """
@@ -23,8 +26,8 @@ class FileStorage:
     __objects = {}
 
     def all(self):
-        def all(self):
-        """Return the dictionary __objects"""
+        """returns dictionary of all stored objects"""
+
         return FileStorage.__objects
 
     def new(self, obj):
@@ -33,8 +36,20 @@ class FileStorage:
         FileStorage.__objects["{}.{}".format(objt, obj.id)] = obj
 
     def save(self):
-        """Serialize __objects to  JSON file __file_path."""
-        odict = FileStorage.__objects
-        objdict = {obj: odict[obj].to_dict() for obj in odict.keys()}
-        with open(FileStorage.__file_path, "w") as f:
-            json.dump(objdict, f)
+        """saves the objects dict on a json file"""
+        odct = FileStorage.__objects
+        obj_dict = {obj: odct[obj].to_dict() for obj in odct.keys()}
+        with open(FileStorage.__file_path, "w") as fil:
+            json.dump(obj_dict, fil)
+
+    def reload(self):
+        """deserialize json to __objects, if it exists"""
+        try:
+            with open(FileStorage.__file_path) as fil:
+                obj_dict = json.load(fil)
+                for s in obj_dict.values():
+                    cls_name = s["__class__"]
+                    del s["__class__"]
+                    self.new(eval(cls_name)(**s))
+        except FileNotFoundError:
+            return
