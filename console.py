@@ -30,16 +30,15 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, l):
-        """Create a new instance of BaseModel, saves it, and prints the id"""
+        """Create a new instance of a class, save it, and print the id"""
         if not l:
             print("** class name missing **")
+        elif l not in storage.classes:
+            print("** class doesn't exist **")
         else:
-            try:
-                new_instance = eval(l)()
-                new_instance.save()
-                print(new_instance.id)
-            except NameError:
-                print("** class doesn't exist **")
+            new_instance = storage.classes[l]()
+            new_instance.save()
+            print(new_instance.id)
 
     def do_show(self, l):
         """Print the string representation of an instance"""
